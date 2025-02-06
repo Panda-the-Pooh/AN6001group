@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>提交运动数据</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>提交运动数据</h1>
+    <form action="/submit_exercise" method="POST">
+        <label for="heart_rate">心率 (bpm): </label>
+        <input type="number" id="heart_rate" name="heart_rate" required>
+        <br>
+        <label for="steps">步数: </label>
+        <input type="number" id="steps" name="steps" required>
+        <br>
+        <label for="calories">卡路里消耗 (kcal): </label>
+        <input type="number" id="calories" name="calories" required>
+        <br>
+        <button type="submit">提交运动数据</button>
+    </form>
+    <a href=" ">返回首页</a >
+</body>
+</html>
