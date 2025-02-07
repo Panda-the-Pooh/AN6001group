@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>健康管理</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 </head>
 <body>
-    <h1>欢迎来到健康管理系统</h1>
-    <nav>
-        <ul>
-            <li><a href="/update_weight_form">更新体重 & 计算BMI</a></li>
-            <li><a href="/submit_exercise_form">提交运动数据</a></li>
-            <li><a href="/submit_food_form">提交饮食数据</a></li>
-            <li><a href="/generate_report">生成健康报告</a></li>
-        </ul>
-    </nav>
+    <div class="container">
+        <h1>欢迎来到健康管理系统</h1>
+        <nav>
+            <ul>
+                <li><a href="/update_weight_form">更新体重 & 计算BMI</a></li>
+                <li><a href="/submit_exercise_form">提交运动数据</a></li>
+                <li><a href="/submit_food_form">提交饮食数据</a></li>
+                <li><a href="/generate_report">生成健康报告</a></li>
+            </ul>
+        </nav>
+    </div>
 </body>
 </html>

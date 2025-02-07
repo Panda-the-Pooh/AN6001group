@@ -1,48 +1,50 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>健康报告</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 </head>
 <body>
-    <h1>健康报告</h1>
+    <div class="container">
+        <h1>健康报告</h1>
 
-    <h2>最近体重变化</h2>
-    <table border="1">
-        <tr>
-            <th>日期</th>
-            <th>体重 (kg)</th>
-        </tr>
-        {% for record in weight_history %}
-        <tr>
-            <td>{{ record[0] }}</td>
-            <td>{{ record[1] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <h2>运动数据</h2>
-    <table border="1">
-        <tr>
-            <th>日期</th>
-            <th>心率 (bpm)</th>
-            <th>步数</th>
-            <th>卡路里消耗 (kcal)</th>
-        </tr>
-        {% for record in exercise_data %}
-        <tr>
-            <td>{{ record[0] }}</td>
-            <td>{{ record[1] }}</td>
-            <td>{{ record[2] }}</td>
-            <td>{{ record[3] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <h2>健康建议</h2>
-    <p>{{ health_advice }}</p >
-
-    <a href="/">返回首页</a >
+        <h2>最近体重变化</h2>
+        <table border="1">
+            <tr>
+                <th>日期</th>
+                <th>体重 (kg)</th>
+            </tr>
+            {% for record in weight_history %}
+            <tr>
+                <td>{{ record[0] }}</td>
+                <td>{{ record[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    
+        <h2>运动数据</h2>
+        <table border="1">
+            <tr>
+                <th>日期</th>
+                <th>心率 (bpm)</th>
+                <th>步数</th>
+                <th>卡路里消耗 (kcal)</th>
+            </tr>
+            {% for record in exercise_data %}
+            <tr>
+                <td>{{ record[0] }}</td>
+                <td>{{ record[1] }}</td>
+                <td>{{ record[2] }}</td>
+                <td>{{ record[3] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    
+        <h2>健康建议</h2>
+        <p>{{ health_advice }}</p >
+    
+        <a href="/">返回首页</a >
+    </div>
 </body>
 </html>

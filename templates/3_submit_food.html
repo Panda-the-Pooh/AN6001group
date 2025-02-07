@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>提交饮食数据</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 </head>
 <body>
-    <h1>提交饮食数据</h1>
-    <form action="/submit_food" method="POST">
-        <label for="food_list">食物列表 (以逗号分隔): </label>
-        <input type="text" id="food_list" name="food_list" required>
-        <button type="submit">提交饮食数据</button>
-    </form>
-    <a href="/">返回首页</a >
+    <div class="container">
+        <h1>提交饮食数据</h1>
+        <form action="/submit_food" method="POST">
+            <label for="food_list">食物列表 (以逗号分隔): </label>
+            <input type="text" id="food_list" name="food_list" required>
+            <button type="submit">提交饮食数据</button>
+        </form>
+        <a href="/">返回首页</a >
+    </div>
 </body>
 </html>
