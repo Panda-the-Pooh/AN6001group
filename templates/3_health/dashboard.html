@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-<html lang="zh">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>操作反馈</title>
+    <title>Operation feedback</title>
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 </head>
 <body>
     <div class="container">
-        <h1>操作反馈</h1>
+        <h1>Operation feedback</h1>
         {% if message %}
             <p>{{ message }}</p >
         {% endif %}
         {% if nutrition_analysis %}
-            <h2>营养分析</h2>
-            <p>{{ nutrition_analysis }}</p >
+            <h2>Nutritional analysis</h2>
+            <p>{{ nutrition_analysis }}</p>
         {% endif %}
-        <a href="/health">返回首页</a >
+        <a href="/health">Back to Health Home</a>
     </div>
 </body>
-</html>

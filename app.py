@@ -4,15 +4,13 @@ import google.generativeai as genai
 import os
 from datetime import datetime
 
-# Flask 应用配置
 app = Flask(__name__)
 
-# 配置 genai API（用于计算饮食营养）
 api = os.getenv('makersuite')
 genai.configure(api_key = api)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
-# 初始化 SQLite 数据库
+# Initialize the SQLite database
 def init_db():
     conn = sqlite3.connect("health.db")
     cursor = conn.cursor()
@@ -44,24 +42,25 @@ def init_db():
 
 init_db()
 
-# main
+# Main Home
 @app.route("/", methods=["GET", "POST"])
 def index():
     return render_template("index.html")
 
-# health主页 - 健康管理主界面
+# Home - Health management main interface
 @app.route("/health", methods=["GET", "POST"])
 def health_index():
     return render_template("3_health/index.html")
 
-# ========= 体重更新 & BMI 计算 =========
 
-# 显示体重更新表单页面
+# ========= Weight Update  =========
+
+# Display the weight update form page
 @app.route("/health/update_weight_form", methods=["GET", "POST"])
 def update_weight_form():
     return render_template("3_health/1_update_weight.html")
 
-# 处理体重更新提交
+# Handle weight update submission
 @app.route("/health/update_weight", methods=["GET", "POST"])
 def update_weight():
     weight = request.form.get("weight")
@@ -73,16 +72,16 @@ def update_weight():
     conn.commit()
     conn.close()
 
-    return render_template("3_health/dashboard.html", message="体重数据已更新！")
+    return render_template("3_health/dashboard.html", message="Weight data updated!")
 
-# ========= 运动数据提交 =========
+# ========= Sports data submission =========
 
-# 显示运动数据表单页面
+# Display the sports data form page
 @app.route("/health/submit_exercise_form", methods=["GET", "POST"])
 def submit_exercise_form():
     return render_template("3_health/2_submit_exercise.html")
 
-# 处理运动数据提交
+# Processing motion data submission
 @app.route("/health/submit_exercise", methods=["GET", "POST"])
 def submit_exercise():
     heart_rate = request.form.get("heart_rate")
@@ -97,65 +96,64 @@ def submit_exercise():
     conn.commit()
     conn.close()
 
-    return render_template("3_health/dashboard.html", message="运动数据已记录！")
+    return render_template("3_health/dashboard.html", message="Sports data recorded!")
 
-# ========= 饮食数据提交 =========
+# ========= Diet data submission =========
 
-# 显示饮食数据表单页面
+# Display the diet data form page
 @app.route("/health/submit_food_form", methods=["GET", "POST"])
 def submit_food_form():
     return render_template("3_health/3_submit_food.html")
 
-# 处理饮食数据提交 & 调用 OpenAI 计算热量
+# Process dietary data submission & call genAI to calculate calories
 @app.route("/health/submit_food", methods=["GET", "POST"])
 def submit_food():
     food_list = request.form.get("food_list")
     date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # 存入数据库
+    # Save to database
     conn = sqlite3.connect("health.db")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO food_data (date, food_list) VALUES (?, ?)", (date, food_list))
     conn.commit()
     conn.close()
 
-    # 调用 Gemini 计算热量
-    prompt = f"计算以下食物的总热量和营养比例（碳水/蛋白质/脂肪）：{food_list}"
+    # Call Gemini to calculate 
+    prompt = f"Calculate the total calories and nutritional ratio (carbohydrate/protein/fat) of the following foods: {food_list}"
     
     response = model.generate_content(prompt)
     
-    # 获取 AI 返回的文本
-    nutrition_result = response.text if response and response.text else "无法获取营养分析结果"
+    nutrition_result = response.text if response and response.text else "Unable to obtain nutritional analysis results"
 
-    return render_template("3_health/dashboard.html", message="饮食数据已记录！", nutrition_analysis=nutrition_result)
+    return render_template("3_health/dashboard.html", message="Diet data recorded!", nutrition_analysis=nutrition_result)
 
-# ========= 生成健康报告 =========
+# ========= Generate health report ==========
 
 @app.route("/health/generate_report", methods=["GET", "POST"])
 def generate_report():
     conn = sqlite3.connect("health.db")
     cursor = conn.cursor()
 
-    # 获取最近 7 天体重数据
+    # Get the weight data for the last 7 days
     cursor.execute("SELECT date, weight FROM weight_history ORDER BY date DESC LIMIT 7")
     weight_history = cursor.fetchall()
 
-    # 获取最近 7 天运动数据
+    # Get the last 7 days of exercise data
     cursor.execute("SELECT date, heart_rate, steps, calories FROM exercise_data ORDER BY date DESC LIMIT 7")
     exercise_data = cursor.fetchall()
 
     conn.close()
 
-    # 生成 AI 健康建议（基于历史数据）
-    prompt = f"用户最近 7 天的体重变化: {weight_history}，运动数据: {exercise_data}。请提供整体健康分析，包括体重趋势、运动建议、饮食调整方案。"
+    # Generate AI health recommendations (based on historical data)
+    prompt = f"User's weight change in the last 7 days: {weight_history}, Sports data: {exercise_data}. Please provide an overall health analysis, including weight trends, exercise recommendations, and dietary modification plans."
     response = model.generate_content(prompt)
     
-    health_advice = response.text if response and response.text else "无法获取营养分析结果"
+    health_advice = response.text if response and response.text else "Unable to obtain nutritional analysis results"
 
     return render_template("3_health/health_report.html", 
-                           weight_history=weight_history, 
-                           exercise_data=exercise_data,
-                           health_advice=health_advice)
+                       weight_history=weight_history, 
+                       exercise_data=exercise_data,
+                       health_advice=health_advice)
     
 if __name__ == "__main__":
     app.run(debug=True)

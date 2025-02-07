@@ -1,19 +1,17 @@
-<!DOCTYPE html>
-<html lang="zh">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>更新体重 & 计算BMI</title>
+    <title>Update weight</title>
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 </head>
 <body>
     <div class="container">
-        <h1>更新体重 & 计算BMI</h1>
+        <h1>Update weight</h1>
         <form action="/health/update_weight" method="POST">
-            <label for="weight">体重 (kg): </label>
+            <label for="weight">Weight (kg): </label>
             <input type="number" id="weight" name="weight" required>
-            <button type="submit">更新体重</button>
+            <button type="submit">Update weight</button>
         </form>
-        <a href="/health">返回首页</a >
+        <a href="/health">Back to Health Home</a >
     </div>
 </body>
 </html>

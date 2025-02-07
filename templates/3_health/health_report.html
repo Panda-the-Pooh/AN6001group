@@ -18,9 +18,15 @@
     </div>
 
     <h2>Health Advice</h2>
-    <p>{{ health_advice }}</p>
-
-    <a href="/health">Back to Home</a>
+    <ul>
+        {% for line in health_advice.split("\n") %}
+            {% if line.strip() %}
+                <li>{{ line.strip() }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    
+    <a href="/health" class="back-button">Back to Health Home</a>
 
     <script>
         // Retrieve data from Flask

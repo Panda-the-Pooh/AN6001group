@@ -1,19 +1,17 @@
-<!DOCTYPE html>
-<html lang="zh">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>提交饮食数据</title>
+    <title>Submit dietary data</title>
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 </head>
 <body>
     <div class="container">
-        <h1>提交饮食数据</h1>
+        <h1>Submit dietary data</h1>
         <form action="/health/submit_food" method="POST">
-            <label for="food_list">食物列表 (以逗号分隔): </label>
+            <label for="food_list">Food list (comma separated): </label>
             <input type="text" id="food_list" name="food_list" required>
-            <button type="submit">提交饮食数据</button>
+            <button type="submit">Submit dietary data</button>
         </form>
-        <a href="/health">返回首页</a >
+        <a href="/health">Back to Health Home</a >
     </div>
 </body>
 </html>

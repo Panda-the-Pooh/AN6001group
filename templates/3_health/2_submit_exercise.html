@@ -1,26 +1,25 @@
-<!DOCTYPE html>
-<html lang="zh">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>提交运动数据</title>
+    <title>Submit sports data</title>
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+</head>
 </head>
 <body>
     <div class="container">
-        <h1>提交运动数据</h1>
+        <h1>Submit sports data</h1>
         <form action="/health/submit_exercise" method="POST">
-            <label for="heart_rate">心率 (bpm): </label>
+            <label for="heart_rate">Heart rate (bpm): </label>
             <input type="number" id="heart_rate" name="heart_rate" required>
             <br>
-            <label for="steps">步数: </label>
+            <label for="steps">Step count: </label>
             <input type="number" id="steps" name="steps" required>
             <br>
-            <label for="calories">卡路里消耗 (kcal): </label>
+            <label for="calories">Calories consumed (kcal): </label>
             <input type="number" id="calories" name="calories" required>
             <br>
-            <button type="submit">提交运动数据</button>
+            <button type="submit">Submit sports data</button>
         </form>
-        <a href="/health">返回首页</a >
+        <a href="/health">Back to Health Home</a >
     </div>
 </body>
 </html>
