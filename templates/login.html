@@ -1,0 +1,16 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Management</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Welcome to your Health Management System!</h2>
+        <p>Please enter username: </p>
+        <form action="/index" method="post">
+            <p><input type="text" name="q"></p>
+            <p><input type="submit" value="Enter"></p>
+        </form>
+    </div>
+</body>

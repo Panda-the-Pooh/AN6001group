@@ -42,8 +42,13 @@ def init_db():
 
 init_db()
 
+# User Log in
+@app.route('/', methods=['GET', 'POST']) # front end to back end: post
+def login():
+    return(render_template('login.html'))
+
 # Main Home
-@app.route("/", methods=["GET", "POST"])
+@app.route("/index", methods=["GET", "POST"])
 def index():
     return render_template("index.html")
 
