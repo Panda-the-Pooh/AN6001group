@@ -1,50 +1,83 @@
-<!DOCTYPE html>
-<html lang="zh">
 <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>健康报告</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <meta charset="UTF-8">
+    <title>Health Report</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>健康报告</h1>
+    <h1>Health Report</h1>
 
-        <h2>最近体重变化</h2>
-        <table border="1">
-            <tr>
-                <th>日期</th>
-                <th>体重 (kg)</th>
-            </tr>
-            {% for record in weight_history %}
-            <tr>
-                <td>{{ record[0] }}</td>
-                <td>{{ record[1] }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    
-        <h2>运动数据</h2>
-        <table border="1">
-            <tr>
-                <th>日期</th>
-                <th>心率 (bpm)</th>
-                <th>步数</th>
-                <th>卡路里消耗 (kcal)</th>
-            </tr>
-            {% for record in exercise_data %}
-            <tr>
-                <td>{{ record[0] }}</td>
-                <td>{{ record[1] }}</td>
-                <td>{{ record[2] }}</td>
-                <td>{{ record[3] }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    
-        <h2>健康建议</h2>
-        <p>{{ health_advice }}</p >
-    
-        <a href="/health">返回首页</a >
+    <h2>Recent Weight Changes</h2>
+    <div style="width: 600px; height: 300px; margin: auto;">
+        <canvas id="weightChart"></canvas>
     </div>
+
+    <h2>Exercise Data (Calories Burned)</h2>
+    <div style="width: 600px; height: 300px; margin: auto;">
+        <canvas id="caloriesChart"></canvas>
+    </div>
+
+    <h2>Health Advice</h2>
+    <p>{{ health_advice }}</p>
+
+    <a href="/health">Back to Home</a>
+
+    <script>
+        // Retrieve data from Flask
+        const weightData = {{ weight_history | tojson }};
+        const exerciseData = {{ exercise_data | tojson }};
+
+        // Process weight data
+        const weightLabels = weightData.map(item => item[0]);  // Dates
+        const weightValues = weightData.map(item => item[1]);  // Weight values
+
+        // Process calorie data
+        const exerciseLabels = exerciseData.map(item => item[0]);  // Dates
+        const calorieValues = exerciseData.map(item => item[3]);   // Calories burned
+
+        // Line chart for weight
+        const weightCtx = document.getElementById('weightChart').getContext('2d');
+        new Chart(weightCtx, {
+            type: 'line',
+            data: {
+                labels: weightLabels,
+                datasets: [{
+                    label: 'Weight (kg)',
+                    data: weightValues,
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: false }
+                }
+            }
+        });
+
+        // Bar chart for calories burned
+        const caloriesCtx = document.getElementById('caloriesChart').getContext('2d');
+        new Chart(caloriesCtx, {
+            type: 'bar',
+            data: {
+                labels: exerciseLabels,
+                datasets: [{
+                    label: 'Calories Burned (kcal)',
+                    data: calorieValues,
+                    backgroundColor: 'orange',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
 </body>
-</html>
