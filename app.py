@@ -44,20 +44,25 @@ def init_db():
 
 init_db()
 
-# 主页 - 健康管理主界面
-@app.route("/", methods=["GET"])
+# main
+@app.route("/", methods=["GET", "POST"])
 def index():
     return render_template("index.html")
+
+# health主页 - 健康管理主界面
+@app.route("/health", methods=["GET", "POST"])
+def health_index():
+    return render_template("3_health/index.html")
 
 # ========= 体重更新 & BMI 计算 =========
 
 # 显示体重更新表单页面
-@app.route("/update_weight_form", methods=["GET"])
+@app.route("/health/update_weight_form", methods=["GET", "POST"])
 def update_weight_form():
-    return render_template("1_update_weight.html")
+    return render_template("3_health/1_update_weight.html")
 
 # 处理体重更新提交
-@app.route("/update_weight", methods=["POST"])
+@app.route("/health/update_weight", methods=["GET", "POST"])
 def update_weight():
     weight = request.form.get("weight")
     date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -68,17 +73,17 @@ def update_weight():
     conn.commit()
     conn.close()
 
-    return render_template("dashboard.html", message="体重数据已更新！")
+    return render_template("3_health/dashboard.html", message="体重数据已更新！")
 
 # ========= 运动数据提交 =========
 
 # 显示运动数据表单页面
-@app.route("/submit_exercise_form", methods=["GET"])
+@app.route("/health/submit_exercise_form", methods=["GET", "POST"])
 def submit_exercise_form():
-    return render_template("2_submit_exercise.html")
+    return render_template("3_health/2_submit_exercise.html")
 
 # 处理运动数据提交
-@app.route("/submit_exercise", methods=["POST"])
+@app.route("/health/submit_exercise", methods=["GET", "POST"])
 def submit_exercise():
     heart_rate = request.form.get("heart_rate")
     steps = request.form.get("steps")
@@ -92,17 +97,17 @@ def submit_exercise():
     conn.commit()
     conn.close()
 
-    return render_template("dashboard.html", message="运动数据已记录！")
+    return render_template("3_health/dashboard.html", message="运动数据已记录！")
 
 # ========= 饮食数据提交 =========
 
 # 显示饮食数据表单页面
-@app.route("/submit_food_form", methods=["GET"])
+@app.route("/health/submit_food_form", methods=["GET", "POST"])
 def submit_food_form():
-    return render_template("3_submit_food.html")
+    return render_template("3_health/3_submit_food.html")
 
 # 处理饮食数据提交 & 调用 OpenAI 计算热量
-@app.route("/submit_food", methods=["POST"])
+@app.route("/health/submit_food", methods=["GET", "POST"])
 def submit_food():
     food_list = request.form.get("food_list")
     date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -122,11 +127,11 @@ def submit_food():
     # 获取 AI 返回的文本
     nutrition_result = response.text if response and response.text else "无法获取营养分析结果"
 
-    return render_template("dashboard.html", message="饮食数据已记录！", nutrition_analysis=nutrition_result)
+    return render_template("3_health/dashboard.html", message="饮食数据已记录！", nutrition_analysis=nutrition_result)
 
 # ========= 生成健康报告 =========
 
-@app.route("/generate_report", methods=["GET"])
+@app.route("/health/generate_report", methods=["GET", "POST"])
 def generate_report():
     conn = sqlite3.connect("health.db")
     cursor = conn.cursor()
@@ -147,7 +152,7 @@ def generate_report():
     
     health_advice = response.text if response and response.text else "无法获取营养分析结果"
 
-    return render_template("health_report.html", 
+    return render_template("3_health/health_report.html", 
                            weight_history=weight_history, 
                            exercise_data=exercise_data,
                            health_advice=health_advice)
